@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Submission 2</title>
+    <meta name="description" content="Submission 2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/materialize.min.css" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#4a148c" />
+  </head>
+  <body>
+    <!-- Navigasi -->
+    <nav class="purple darken-4" role="navigation">
+      <div class="nav-wrapper container">
+        <a id="logo-container" href="#" class="brand-logo">Football App</a>
+        <a href="#" data-target="nav-mobile" class="sidenav-trigger">☰</a>
+        <ul class="topnav right hide-on-med-and-down"></ul>
+        <ul id="nav-mobile" class="sidenav"></ul>
+      </div>
+    </nav>
+    <!-- Akhir Navigasi -->
+
+    <div class="body-content">
+      
+    </div>
+
+    <footer class="purple darken-4 page-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12">
+            <h5 class="white-text">Premier League</h5>
+            <p class="grey-text text-lighten-4">The Premier League, often referred to outside England as the English Premier League or the EPL, is the top level of the English football league system. Contested by 20 clubs, it operates on a system of promotion and relegation with the English Football League.</p>
+          </div>
+          <div class="col l4 offset-l2 s12">
+            <h5 class="white-text">My Social Media</h5>
+            <ul>
+              <li><a class="grey-text text-lighten-3" href="https://github.com/Adekabang">Github</a></li>
+              <li><a class="grey-text text-lighten-3" href="https://twitter.com/Mraskaa">Twitter</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright center-align">
+        <div class="container">
+        © 2020 Copyright Moh Raska
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/materialize.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/api.js"></script>
+
+    <script>
+      // REGISTER SERVICE WORKER
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .then(function () {
+              console.log("Pendaftaran ServiceWorker berhasil");
+            })
+            .catch(function () {
+              console.log("Pendaftaran ServiceWorker gagal");
+            });
+        });
+      } else {
+        console.log("ServiceWorker belum didukung browser ini.");
+      }
+
+    </script>
+  </body>
+</html>
