@@ -25,7 +25,10 @@ document.addEventListener("DOMContentLoaded", function () {
               M.Sidenav.getInstance(sidenav).close();
 
               // Muat konten halaman yang dipanggil
-              page = event.target.getAttribute("href").substr(1);
+              page = event.target
+                .getAttribute("href")
+                .substr(1)
+                .replace("#", "");
               loadPage(page);
             });
           });
@@ -36,8 +39,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Load page content
-  var page = window.location.hash.substr(1);
-  if (page == "") page = "home";
+  var page = window.location.hash.substr(1).replace("#", "");
+  if (window.location.pathname == "/team.html") {
+    page = "team";
+  } else if (
+    page == "" &&
+    (window.location.pathname == "/" ||
+      window.location.pathname == "/index.html")
+  ) {
+    page = "home";
+  }
   loadPage(page);
 
   function loadPage(page) {
@@ -47,10 +58,15 @@ document.addEventListener("DOMContentLoaded", function () {
         var content = document.querySelector(".body-content");
         if (this.status == 200) {
           content.innerHTML = xhttp.responseText;
-          if (page == "home") {
-            getMatches();
-          } else if (page == "team") {
-            getTeam();
+          var filepath = window.location.pathname;
+          if (filepath === "/team.html") {
+            getTeamDetails();
+          } else {
+            if (page == "home") {
+              getMatches();
+            } else if (page == "teams") {
+              getTeam();
+            }
           }
           M.AutoInit();
         } else if (this.status == 404) {
@@ -60,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     };
-
+    console.log(page);
     xhttp.open("GET", "pages/" + page + ".html", true);
     xhttp.send();
   }

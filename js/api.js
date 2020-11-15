@@ -153,7 +153,7 @@ function getTeam() {
         if (response) {
           response.json().then(function (data) {
             var dataHTML = "";
-            data.teams.forEach( (team) =>{
+            data.teams.forEach((team) => {
               dataHTML += `
                 <div class="col s12 m6 l4">
                 <div class="card">
@@ -162,7 +162,7 @@ function getTeam() {
                     <h6 class="card-title">${team.name}</h6>
                   </div>
                   <div class="card-action">
-                  <a class="waves-effect waves-light btn purple darken-4">Like</a>
+                  <a class="waves-effect waves-light btn purple darken-4" href="/team.html?id=${team.id}">Detail</a>
                   </div>
                 </div>
               </div>
@@ -191,7 +191,7 @@ function getTeam() {
           <h6 class="card-title">${team.name}</h6>
         </div>
         <div class="card-action">
-        <a class="waves-effect waves-light btn purple darken-4">Like</a>
+        <a class="waves-effect waves-light btn purple darken-4" href="/team.html?id=${team.id}">Detail</a>
         </div>
       </div>
     </div>
@@ -201,4 +201,124 @@ function getTeam() {
       document.getElementById("teams").innerHTML = dataHTML;
     })
     .catch(error);
+}
+
+function getTeamDetails() {
+  // Ambil nilai query parameter (?id=)
+  var urlParams = new URLSearchParams(window.location.search);
+  var idParam = urlParams.get("id");
+
+  if ('caches' in window) {
+    caches.match(base_url + "teams/" + idParam).then(function(response) {
+      if (response) {
+        response.json().then(function (data) {
+          var playerList = '';
+          data.squad.forEach(player => {
+            playerList += `<tr>
+            <td>${player.name ? player.name : "-"}</td>
+            <td>${player.position ? player.position : "-"}</td>
+            <td>${player.nationality ? player.nationality : "-"}</td>
+            </tr>`
+          });
+          var teamHTML = `
+          <h3>${data.shortName}</h3>
+          <div class="col s12">
+            <div>
+              <img src="https://crests.football-data.org/${data.id}.svg" height="300"/>
+            </div>
+            <div class="col s0 m4"></div>
+            <div class="card col s12 m4">
+              <div class="card-content">
+                <span class="card-title">${data.name}</span>
+                <a href="${data.website}">${data.website}</a>
+                <p>${data.address}</p>
+                <p>${data.phone}</p>
+              </div>
+            </div>
+            <div class="col s0 m4"></div>
+          </div>
+
+          <div>
+            <a class="waves-effect waves-light btn purple darken-4">Like</a>
+          </div>
+            
+          <div class="col s0 m3"></div>
+          <div class="col s12 m6 container">
+            <table class="highlight">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Nationality</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${playerList}
+              </tbody>
+            </table>
+          </div>
+          <div class="col s0 m3"></div>
+            `;
+          document.getElementById("team").innerHTML = teamHTML;
+        })
+      }
+    })
+  }
+
+
+  fetch(base_url + "teams/" + idParam, API_TOKEN)
+    .then(status)
+    .then(json)
+    .then(function (data) {
+      console.log(data);
+
+      var playerList = '';
+      data.squad.forEach(player => {
+        playerList += `<tr>
+        <td>${player.name ? player.name : "-"}</td>
+        <td>${player.position ? player.position : "-"}</td>
+        <td>${player.nationality ? player.nationality : "-"}</td>
+        </tr>`
+      });
+      var teamHTML = `
+      <h3>${data.shortName}</h3>
+      <div class="col s12">
+        <div>
+          <img src="https://crests.football-data.org/${data.id}.svg" height="300"/>
+        </div>
+        <div class="col s0 m4"></div>
+        <div class="card col s12 m4">
+          <div class="card-content">
+            <span class="card-title">${data.name}</span>
+            <a href="${data.website}">${data.website}</a>
+            <p>${data.address}</p>
+            <p>${data.phone}</p>
+          </div>
+        </div>
+        <div class="col s0 m4"></div>
+      </div>
+
+      <div>
+        <a class="waves-effect waves-light btn purple darken-4">Like</a>
+      </div>
+        
+      <div class="col s0 m3"></div>
+      <div class="col s12 m6 container">
+        <table class="highlight">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Nationality</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${playerList}
+          </tbody>
+        </table>
+      </div>
+      <div class="col s0 m3"></div>
+        `;
+      document.getElementById("team").innerHTML = teamHTML;
+    });
 }
