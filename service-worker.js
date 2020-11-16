@@ -1,4 +1,4 @@
-const CACHE_NAME = "firstpwa-v223";
+const CACHE_NAME = "firstpwa-v732";
 var urlsToCache = [
   "/",
   "/icon.png",
@@ -16,6 +16,8 @@ var urlsToCache = [
   "/js/api.js",
   "/js/materialize.min.js",
   "/js/script.js",
+  "https://fonts.googleapis.com/icon?family=Material+Icons",
+  "https://fonts.gstatic.com/s/materialicons/v55/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2",
 ];
 
 self.addEventListener("install", function (event) {
@@ -50,7 +52,7 @@ self.addEventListener("fetch", function (event) {
         return fetch(event.request).then(function (response) {
           cache.put(event.request.url, response.clone());
 
-          console.log("ServiceWorker: Gunakan aset dari server: ", response.url);
+          // console.log("ServiceWorker: Gunakan aset dari server: ", response.url);
 
           return response;
         });
@@ -59,10 +61,10 @@ self.addEventListener("fetch", function (event) {
   } else {
     event.respondWith(
       caches.match(event.request,{ ignoreSearch: true }).then(function (response) {
-        console.log(
-          "ServiceWorker: Memuat aset dari cache: ",
-          event.request.url
-        );
+        // console.log(
+        //   "ServiceWorker: Memuat aset dari cache: ",
+        //   event.request.url
+        // );
         return response || fetch(event.request);
       })
     );

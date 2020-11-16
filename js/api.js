@@ -204,23 +204,24 @@ function getTeam() {
 }
 
 function getTeamDetails() {
-  // Ambil nilai query parameter (?id=)
-  var urlParams = new URLSearchParams(window.location.search);
-  var idParam = urlParams.get("id");
+  return new Promise(function (resolve, reject) {
+    // Ambil nilai query parameter (?id=)
+    var urlParams = new URLSearchParams(window.location.search);
+    var idParam = urlParams.get("id");
 
-  if ('caches' in window) {
-    caches.match(base_url + "teams/" + idParam).then(function(response) {
-      if (response) {
-        response.json().then(function (data) {
-          var playerList = '';
-          data.squad.forEach(player => {
-            playerList += `<tr>
+    if ("caches" in window) {
+      caches.match(base_url + "teams/" + idParam).then(function (response) {
+        if (response) {
+          response.json().then(function (data) {
+            var playerList = "";
+            data.squad.forEach((player) => {
+              playerList += `<tr>
             <td>${player.name ? player.name : "-"}</td>
             <td>${player.position ? player.position : "-"}</td>
             <td>${player.nationality ? player.nationality : "-"}</td>
-            </tr>`
-          });
-          var teamHTML = `
+            </tr>`;
+            });
+            var teamHTML = `
           <h3>${data.shortName}</h3>
           <div class="col s12">
             <div>
@@ -236,10 +237,6 @@ function getTeamDetails() {
               </div>
             </div>
             <div class="col s0 m4"></div>
-          </div>
-
-          <div>
-            <a class="waves-effect waves-light btn purple darken-4">Like</a>
           </div>
             
           <div class="col s0 m3"></div>
@@ -259,28 +256,26 @@ function getTeamDetails() {
           </div>
           <div class="col s0 m3"></div>
             `;
-          document.getElementById("team").innerHTML = teamHTML;
-        })
-      }
-    })
-  }
+            document.getElementById("team").innerHTML = teamHTML;
+            resolve(data);
+          });
+        }
+      });
+    }
 
-
-  fetch(base_url + "teams/" + idParam, API_TOKEN)
-    .then(status)
-    .then(json)
-    .then(function (data) {
-      console.log(data);
-
-      var playerList = '';
-      data.squad.forEach(player => {
-        playerList += `<tr>
+    fetch(base_url + "teams/" + idParam, API_TOKEN)
+      .then(status)
+      .then(json)
+      .then(function (data) {
+        var playerList = "";
+        data.squad.forEach((player) => {
+          playerList += `<tr>
         <td>${player.name ? player.name : "-"}</td>
         <td>${player.position ? player.position : "-"}</td>
         <td>${player.nationality ? player.nationality : "-"}</td>
-        </tr>`
-      });
-      var teamHTML = `
+        </tr>`;
+        });
+        var teamHTML = `
       <h3>${data.shortName}</h3>
       <div class="col s12">
         <div>
@@ -296,10 +291,6 @@ function getTeamDetails() {
           </div>
         </div>
         <div class="col s0 m4"></div>
-      </div>
-
-      <div>
-        <a class="waves-effect waves-light btn purple darken-4">Like</a>
       </div>
         
       <div class="col s0 m3"></div>
@@ -319,6 +310,87 @@ function getTeamDetails() {
       </div>
       <div class="col s0 m3"></div>
         `;
-      document.getElementById("team").innerHTML = teamHTML;
+        document.getElementById("team").innerHTML = teamHTML;
+        resolve(data);
+      });
+  });
+}
+
+function getFavoriteTeams() {
+  getAll().then(function (teams) {
+    console.log(teams);
+    // Menyusun komponen card artikel secara dinamis
+    var teamsHTML = "";
+    teams.forEach((team) => {
+      teamsHTML += `
+                <div class="col s12 m6 l4">
+                <div class="card">
+                  <div class="card-content " style="min-height: 250px">
+                  <img class="" src="https://crests.football-data.org/${team.id}.svg" style="height: 100px;">
+                    <h6 class="card-title">${team.name}</h6>
+                  </div>
+                  <div class="card-action">
+                  <a class="waves-effect waves-light btn purple darken-4" href="/team.html?id=${team.id}&saved=true">Detail</a>
+                  </div>
+                </div>
+              </div>
+                `;
     });
+    // Sisipkan komponen card ke dalam elemen dengan id #body-content
+    document.getElementById("teams").innerHTML = teamsHTML;
+  });
+}
+
+function getFavoriteTeamById() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var idParam = urlParams.get("id");
+
+  getById(idParam).then(function (data) {
+    console.log(data);
+    var playerList = "";
+    data.squad.forEach((player) => {
+      playerList += `<tr>
+            <td>${player.name ? player.name : "-"}</td>
+            <td>${player.position ? player.position : "-"}</td>
+            <td>${player.nationality ? player.nationality : "-"}</td>
+            </tr>`;
+    });
+    var teamHTML = `
+          <h3>${data.shortName}</h3>
+          <div class="col s12">
+            <div>
+              <img src="https://crests.football-data.org/${data.id}.svg" height="300"/>
+            </div>
+            <div class="col s0 m4"></div>
+            <div class="card col s12 m4">
+              <div class="card-content">
+                <span class="card-title">${data.name}</span>
+                <a href="${data.website}">${data.website}</a>
+                <p>${data.address}</p>
+                <p>${data.phone}</p>
+              </div>
+            </div>
+            <div class="col s0 m4"></div>
+          </div>
+            
+          <div class="col s0 m3"></div>
+          <div class="col s12 m6 container">
+            <table class="highlight">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Nationality</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${playerList}
+              </tbody>
+            </table>
+          </div>
+          <div class="col s0 m3"></div>
+            `;
+    // Sisipkan komponen card ke dalam elemen dengan id #content
+    document.getElementById("team").innerHTML = teamHTML;
+  });
 }

@@ -60,12 +60,14 @@ document.addEventListener("DOMContentLoaded", function () {
           content.innerHTML = xhttp.responseText;
           var filepath = window.location.pathname;
           if (filepath === "/team.html") {
-            getTeamDetails();
+            // getTeamDetails();
           } else {
             if (page == "home") {
               getMatches();
             } else if (page == "teams") {
               getTeam();
+            } else if (page == "favorite") {
+              getFavoriteTeams();
             }
           }
           M.AutoInit();
