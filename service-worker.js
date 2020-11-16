@@ -1,4 +1,4 @@
-const CACHE_NAME = "firstpwa-v732";
+const CACHE_NAME = "firstpwa-v7352";
 var urlsToCache = [
   "/",
   "/icon.png",
@@ -60,13 +60,36 @@ self.addEventListener("fetch", function (event) {
     );
   } else {
     event.respondWith(
-      caches.match(event.request,{ ignoreSearch: true }).then(function (response) {
-        // console.log(
-        //   "ServiceWorker: Memuat aset dari cache: ",
-        //   event.request.url
-        // );
-        return response || fetch(event.request);
-      })
+      caches
+        .match(event.request, { ignoreSearch: true })
+        .then(function (response) {
+          // console.log(
+          //   "ServiceWorker: Memuat aset dari cache: ",
+          //   event.request.url
+          // );
+          return response || fetch(event.request);
+        })
     );
   }
+});
+
+self.addEventListener("push", function (event) {
+  var body;
+  if (event.data) {
+    body = event.data.text();
+  } else {
+    body = "Push message no payload";
+  }
+  var options = {
+    body: body,
+    icon: "icon.png",
+    vibrate: [100, 50, 100],
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: 1,
+    },
+  };
+  event.waitUntil(
+    self.registration.showNotification("Push Notification", options)
+  );
 });

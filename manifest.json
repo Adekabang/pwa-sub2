@@ -8,9 +8,10 @@
     "theme_color": "#4a148c",
     "icons": [
         {
-            "src": "icon.png",
-            "sizes": "512x512",
-            "type": "image/png"
+        "src": "icon.png",
+        "sizes": "512x512",
+        "type": "image/png"
         }
-    ]
+    ],
+    "gcm_sender_id": "1010726380069"
 }
