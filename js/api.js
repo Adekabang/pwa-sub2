@@ -158,7 +158,7 @@ function getTeam() {
                 <div class="col s12 m6 l4">
                 <div class="card">
                   <div class="card-content " style="min-height: 250px">
-                  <img class="" src="https://crests.football-data.org/${team.id}.svg" style="height: 100px;">
+                  <img class="" src="https://crests.football-data.org/${team.id}.svg" alt="${team.name}" style="height: 100px;">
                     <h6 class="card-title">${team.name}</h6>
                   </div>
                   <div class="card-action">
@@ -187,7 +187,7 @@ function getTeam() {
     <div class="col s12 m6 l4">
       <div class="card">
         <div class="card-content " style="min-height: 250px">
-        <img class="" src="https://crests.football-data.org/${team.id}.svg" style="height: 100px;">
+        <img class="" src="https://crests.football-data.org/${team.id}.svg" alt="${team.name}" style="height: 100px;">
           <h6 class="card-title">${team.name}</h6>
         </div>
         <div class="card-action">
@@ -225,7 +225,7 @@ function getTeamDetails() {
           <h3>${data.shortName}</h3>
           <div class="col s12">
             <div>
-              <img src="https://crests.football-data.org/${data.id}.svg" height="300"/>
+              <img src="https://crests.football-data.org/${data.id}.svg" alt="${data.name}" height="300"/>
             </div>
             <div class="col s0 m4"></div>
             <div class="card col s12 m4">
@@ -279,7 +279,7 @@ function getTeamDetails() {
       <h3>${data.shortName}</h3>
       <div class="col s12">
         <div>
-          <img src="https://crests.football-data.org/${data.id}.svg" height="300"/>
+          <img src="https://crests.football-data.org/${data.id}.svg" alt="${data.name}" height="300"/>
         </div>
         <div class="col s0 m4"></div>
         <div class="card col s12 m4">
@@ -326,7 +326,7 @@ function getFavoriteTeams() {
                 <div class="col s12 m6 l4">
                 <div class="card">
                   <div class="card-content " style="min-height: 250px">
-                  <img class="" src="https://crests.football-data.org/${team.id}.svg" style="height: 100px;">
+                  <img class="" src="https://crests.football-data.org/${team.id}.svg" alt="${team.name}" style="height: 100px;">
                     <h6 class="card-title">${team.name}</h6>
                   </div>
                   <div class="card-action">
@@ -359,7 +359,7 @@ function getFavoriteTeamById() {
           <h3>${data.shortName}</h3>
           <div class="col s12">
             <div>
-              <img src="https://crests.football-data.org/${data.id}.svg" height="300"/>
+              <img src="https://crests.football-data.org/${data.id}.svg" alt="${data.name}" height="300"/>
             </div>
             <div class="col s0 m4"></div>
             <div class="card col s12 m4">

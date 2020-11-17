@@ -1,5 +1,5 @@
-const CACHE_NAME = "firstpwa-v7352";
-var urlsToCache = [
+const CACHE_NAME = "firstpwa-v63463";
+const urlsToCache = [
   "/",
   "/icon.png",
   "/index.html",
@@ -8,19 +8,21 @@ var urlsToCache = [
   "/manifest.json",
   "/nav.html",
   "/team.html",
-  "/pages/contact.html",
+  "/pages/favorite.html",
   "/pages/home.html",
   "/pages/team.html",
   "/pages/teams.html",
   "/css/materialize.min.css",
   "/js/api.js",
+  "/js/db.js",
+  "/js/idb.js",
   "/js/materialize.min.js",
   "/js/script.js",
   "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://fonts.gstatic.com/s/materialicons/v55/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2",
 ];
 
-self.addEventListener("install", function (event) {
+self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
       return cache.addAll(urlsToCache);
@@ -28,7 +30,7 @@ self.addEventListener("install", function (event) {
   );
 });
 
-self.addEventListener("activate", function (event) {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then(function (cacheNames) {
       return Promise.all(
@@ -43,7 +45,7 @@ self.addEventListener("activate", function (event) {
   );
 });
 
-self.addEventListener("fetch", function (event) {
+self.addEventListener("fetch", (event) => {
   var base_url = "https://api.football-data.org/v2/";
 
   if (event.request.url.indexOf(base_url) > -1) {
@@ -73,7 +75,7 @@ self.addEventListener("fetch", function (event) {
   }
 });
 
-self.addEventListener("push", function (event) {
+self.addEventListener("push", (event) => {
   var body;
   if (event.data) {
     body = event.data.text();

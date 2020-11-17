@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   // SIDEBAR NAVIGATION
-  var elems = document.querySelectorAll(".sidenav");
+  const elems = document.querySelectorAll(".sidenav");
   M.Sidenav.init(elems);
   loadNav();
 
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     };
     console.log(page);
-    xhttp.open("GET", "pages/" + page + ".html", true);
+    xhttp.open("GET", `pages/${page}.html`, true);
     xhttp.send();
   }
 });
