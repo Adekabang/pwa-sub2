@@ -1,4 +1,4 @@
-var webPush = require("web-push");
+const webPush = require("web-push");
 
 const vapidKeys = {
   publicKey:
@@ -11,7 +11,7 @@ webPush.setVapidDetails(
   vapidKeys.publicKey,
   vapidKeys.privateKey
 );
-var pushSubscription = {
+const pushSubscription = {
   endpoint:
     "https://fcm.googleapis.com/fcm/send/cO2ogHxV75Q:APA91bEecrJ_dFy2y-NpsKp-0_Q6FaaGWvLXruitB7WWIKiawQV3rGmxaQl1FRmZjsa-ihBYD8IHivbNjkvumTE2tXK8_Q2P4tTLDgy3kPB1UE2qhIi1cDKKrbN38suxnfkQJoKOgvxO",
   keys: {
@@ -20,9 +20,9 @@ var pushSubscription = {
     auth: "xGHbZgJ7vM+oUYofCO1KuA==",
   },
 };
-var payload = "Notifikasi dari Premier League App";
+const payload = "Notifikasi dari Premier League App";
 
-var options = {
+const options = {
   gcmAPIKey: "1010726380069",
   TTL: 60,
 };

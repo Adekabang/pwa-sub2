@@ -1,4 +1,4 @@
-var base_url = "https://api.football-data.org/v2/";
+const base_url = "https://api.football-data.org/v2/";
 const API_TOKEN = {
   headers: {
     "X-Auth-Token": "dd651dcdd86646b1b6eee0066bdd17ce",
@@ -35,10 +35,10 @@ function getMatches() {
   if ("caches" in window) {
     caches
       .match(base_url + "competitions/2021/matches?status=LIVE")
-      .then(function (response) {
+      .then((response) => {
         if (response) {
-          response.json().then(function (data) {
-            var dataHTML = "";
+          response.json().then((data) => {
+            let dataHTML = "";
             if (data.matches.length === 0) {
               dataHTML += `<h5 class="center-align">No Match now</h5>`;
             } else {
@@ -94,8 +94,8 @@ function getMatches() {
   fetch(base_url + "competitions/2021/matches?status=LIVE", API_TOKEN)
     .then(status)
     .then(json)
-    .then(function (data) {
-      var dataHTML = "";
+    .then((data) => {
+      let dataHTML = "";
       if (data.matches.length === 0) {
         dataHTML += `<h5 class="center-align">No Match now</h5>`;
       } else {
@@ -147,14 +147,12 @@ function getMatches() {
 
 function getTeam() {
   if ("caches" in window) {
-    caches
-      .match(base_url + "competitions/2021/teams")
-      .then(function (response) {
-        if (response) {
-          response.json().then(function (data) {
-            var dataHTML = "";
-            data.teams.forEach((team) => {
-              dataHTML += `
+    caches.match(base_url + "competitions/2021/teams").then((response) => {
+      if (response) {
+        response.json().then((data) => {
+          let dataHTML = "";
+          data.teams.forEach((team) => {
+            dataHTML += `
                 <div class="col s12 m6 l4">
                 <div class="card">
                   <div class="card-content " style="min-height: 250px">
@@ -167,18 +165,18 @@ function getTeam() {
                 </div>
               </div>
                 `;
-            });
-            // Sisipkan komponen card ke dalam elemen dengan id #content
-            document.getElementById("teams").innerHTML = dataHTML;
           });
-        }
-      });
+          // Sisipkan komponen card ke dalam elemen dengan id #content
+          document.getElementById("teams").innerHTML = dataHTML;
+        });
+      }
+    });
   }
   fetch(base_url + "competitions/2021/teams", API_TOKEN)
     .then(status)
     .then(json)
-    .then(function (data) {
-      var dataHTML = "";
+    .then((data) => {
+      let dataHTML = "";
       if (data.teams.length === 0) {
         dataHTML += `<h5 class="center-align">No Team here</h5>`;
       } else {
@@ -206,14 +204,14 @@ function getTeam() {
 function getTeamDetails() {
   return new Promise(function (resolve, reject) {
     // Ambil nilai query parameter (?id=)
-    var urlParams = new URLSearchParams(window.location.search);
-    var idParam = urlParams.get("id");
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get("id");
 
     if ("caches" in window) {
-      caches.match(base_url + "teams/" + idParam).then(function (response) {
+      caches.match(base_url + "teams/" + idParam).then((response) => {
         if (response) {
-          response.json().then(function (data) {
-            var playerList = "";
+          response.json().then((data) => {
+            let playerList = "";
             data.squad.forEach((player) => {
               playerList += `<tr>
             <td>${player.name ? player.name : "-"}</td>
@@ -221,7 +219,7 @@ function getTeamDetails() {
             <td>${player.nationality ? player.nationality : "-"}</td>
             </tr>`;
             });
-            var teamHTML = `
+            let teamHTML = `
           <h3>${data.shortName}</h3>
           <div class="col s12">
             <div>
@@ -266,8 +264,8 @@ function getTeamDetails() {
     fetch(base_url + "teams/" + idParam, API_TOKEN)
       .then(status)
       .then(json)
-      .then(function (data) {
-        var playerList = "";
+      .then((data) => {
+        let playerList = "";
         data.squad.forEach((player) => {
           playerList += `<tr>
         <td>${player.name ? player.name : "-"}</td>
@@ -275,7 +273,7 @@ function getTeamDetails() {
         <td>${player.nationality ? player.nationality : "-"}</td>
         </tr>`;
         });
-        var teamHTML = `
+        let teamHTML = `
       <h3>${data.shortName}</h3>
       <div class="col s12">
         <div>
@@ -317,10 +315,10 @@ function getTeamDetails() {
 }
 
 function getFavoriteTeams() {
-  getAll().then(function (teams) {
+  getAll().then((teams) => {
     console.log(teams);
     // Menyusun komponen card artikel secara dinamis
-    var teamsHTML = "";
+    let teamsHTML = "";
     teams.forEach((team) => {
       teamsHTML += `
                 <div class="col s12 m6 l4">
@@ -342,12 +340,12 @@ function getFavoriteTeams() {
 }
 
 function getFavoriteTeamById() {
-  var urlParams = new URLSearchParams(window.location.search);
-  var idParam = urlParams.get("id");
+  const urlParams = new URLSearchParams(window.location.search);
+  const idParam = urlParams.get("id");
 
-  getById(idParam).then(function (data) {
+  getById(idParam).then((data) => {
     console.log(data);
-    var playerList = "";
+    let playerList = "";
     data.squad.forEach((player) => {
       playerList += `<tr>
             <td>${player.name ? player.name : "-"}</td>
@@ -355,7 +353,7 @@ function getFavoriteTeamById() {
             <td>${player.nationality ? player.nationality : "-"}</td>
             </tr>`;
     });
-    var teamHTML = `
+    let teamHTML = `
           <h3>${data.shortName}</h3>
           <div class="col s12">
             <div>

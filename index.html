@@ -14,12 +14,16 @@
     <meta name="theme-color" content="#4a148c" />
     <link rel="apple-touch-icon" href="/icon.png" />
     <link rel="apple-touch-startup-image" href="/icon.png" />
+    <link rel="shortcut icon" type="image/png" href="/icon.png" />
+    <link rel="icon" type="image/png" href="/icon.png" />
   </head>
   <body>
     <!-- Navigasi -->
     <nav class="purple darken-4" role="navigation">
       <div class="nav-wrapper container">
-        <a id="logo-container" href="/#home" class="brand-logo">Football App</a>
+        <a id="logo-container" href="/#home" class="brand-logo"
+          >Football<span class="hide-on-small-only"> App</span></a
+        >
         <a href="#" data-target="nav-mobile" class="sidenav-trigger">☰</a>
         <ul class="topnav right hide-on-med-and-down"></ul>
         <ul id="nav-mobile" class="sidenav"></ul>
@@ -27,7 +31,21 @@
     </nav>
     <!-- Akhir Navigasi -->
 
-    <div class="body-content"></div>
+    <div class="body-content">
+      <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-blue-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <footer class="purple darken-4 page-footer">
       <div class="container">

@@ -1,4 +1,4 @@
-const CACHE_NAME = "firstpwa-v63463";
+const CACHE_NAME = "firstpwa-v17111645";
 const urlsToCache = [
   "/",
   "/icon.png",
@@ -8,6 +8,7 @@ const urlsToCache = [
   "/manifest.json",
   "/nav.html",
   "/team.html",
+  "/service-worker.js",
   "/pages/favorite.html",
   "/pages/home.html",
   "/pages/team.html",
@@ -24,7 +25,7 @@ const urlsToCache = [
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function (cache) {
+    caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(urlsToCache);
     })
   );
@@ -46,12 +47,12 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  var base_url = "https://api.football-data.org/v2/";
+  const base_url = "https://api.football-data.org/v2/";
 
   if (event.request.url.indexOf(base_url) > -1) {
     event.respondWith(
-      caches.open(CACHE_NAME).then(function (cache) {
-        return fetch(event.request).then(function (response) {
+      caches.open(CACHE_NAME).then((cache) => {
+        return fetch(event.request).then((response) => {
           cache.put(event.request.url, response.clone());
 
           // console.log("ServiceWorker: Gunakan aset dari server: ", response.url);
@@ -62,27 +63,25 @@ self.addEventListener("fetch", (event) => {
     );
   } else {
     event.respondWith(
-      caches
-        .match(event.request, { ignoreSearch: true })
-        .then(function (response) {
-          // console.log(
-          //   "ServiceWorker: Memuat aset dari cache: ",
-          //   event.request.url
-          // );
-          return response || fetch(event.request);
-        })
+      caches.match(event.request, { ignoreSearch: true }).then((response) => {
+        // console.log(
+        //   "ServiceWorker: Memuat aset dari cache: ",
+        //   event.request.url
+        // );
+        return response || fetch(event.request);
+      })
     );
   }
 });
 
 self.addEventListener("push", (event) => {
-  var body;
+  let body;
   if (event.data) {
     body = event.data.text();
   } else {
     body = "Push message no payload";
   }
-  var options = {
+  const options = {
     body: body,
     icon: "icon.png",
     vibrate: [100, 50, 100],
