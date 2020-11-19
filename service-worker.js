@@ -1,78 +1,69 @@
-const CACHE_NAME = "firstpwa-v17111645";
-const urlsToCache = [
-  "/",
-  "/icon.png",
-  "/index.html",
-  "/lapangan.jpg",
-  "/Logo.png",
-  "/manifest.json",
-  "/nav.html",
-  "/team.html",
-  "/service-worker.js",
-  "/pages/favorite.html",
-  "/pages/home.html",
-  "/pages/team.html",
-  "/pages/teams.html",
-  "/css/materialize.min.css",
-  "/js/api.js",
-  "/js/db.js",
-  "/js/idb.js",
-  "/js/materialize.min.js",
-  "/js/script.js",
-  "https://fonts.googleapis.com/icon?family=Material+Icons",
-  "https://fonts.gstatic.com/s/materialicons/v55/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2",
-];
+importScripts(
+  "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js"
+);
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache);
-    })
-  );
-});
+if (workbox) console.log(`Workbox berhasil dimuat`);
+else console.log(`Workbox gagal dimuat`);
 
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then(function (cacheNames) {
-      return Promise.all(
-        cacheNames.map(function (cacheName) {
-          if (cacheName != CACHE_NAME) {
-            console.log("ServiceWorker: cache " + cacheName + " dihapus");
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
-});
+workbox.precaching.precacheAndRoute([
+  { url: "/icon.png", revision: "1" },
+  { url: "/index.html", revision: "1" },
+  { url: "/lapangan.jpg", revision: "1" },
+  { url: "/Logo.png", revision: "1" },
+  { url: "/manifest.json", revision: "1" },
+  { url: "/nav.html", revision: "1" },
+  { url: "/team.html", revision: "1" },
+  { url: "/css/materialize.min.css", revision: "1" },
+]);
 
-self.addEventListener("fetch", (event) => {
-  const base_url = "https://api.football-data.org/v2/";
+workbox.routing.registerRoute(
+  new RegExp("/pages/"),
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: "pages",
+  })
+);
 
-  if (event.request.url.indexOf(base_url) > -1) {
-    event.respondWith(
-      caches.open(CACHE_NAME).then((cache) => {
-        return fetch(event.request).then((response) => {
-          cache.put(event.request.url, response.clone());
+workbox.routing.registerRoute(
+  new RegExp("/js/"),
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: "js",
+  })
+);
 
-          // console.log("ServiceWorker: Gunakan aset dari server: ", response.url);
+workbox.routing.registerRoute(
+  /^https:\/\/fonts\.googleapis\.com/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: "material-icons",
+  })
+);
 
-          return response;
-        });
-      })
-    );
-  } else {
-    event.respondWith(
-      caches.match(event.request, { ignoreSearch: true }).then((response) => {
-        // console.log(
-        //   "ServiceWorker: Memuat aset dari cache: ",
-        //   event.request.url
-        // );
-        return response || fetch(event.request);
-      })
-    );
-  }
-});
+workbox.routing.registerRoute(
+  /^https:\/\/fonts\.gstatic\.com/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: "material-icons-font",
+  })
+);
+
+workbox.routing.registerRoute(
+  /^https:\/\/api\.football-data.org\/v2/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: "football-api",
+  })
+);
+
+workbox.routing.registerRoute(
+  new RegExp("/team.html"),
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: "team-details",
+  })
+);
+
+workbox.routing.registerRoute(
+  /.*(?:png|gif|jpg|jpeg|svg|ico)$/,
+  workbox.strategies.cacheFirst({
+    cacheName: "img-all",
+  })
+);
 
 self.addEventListener("push", (event) => {
   let body;
